@@ -1,0 +1,53 @@
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLineEdit
+
+morse_alphabet = {'A': '.-', 'B': '-...',
+
+                   'C': '-.-.', 'D': '-..', 'E': '.',
+
+                   'F': '..-.', 'G': '--.', 'H': '....',
+
+                   'I': '..', 'J': '.---', 'K': '-.-',
+
+                   'L': '.-..', 'M': '--', 'N': '-.',
+
+                   'O': '---', 'P': '.--.', 'Q': '--.-',
+
+                   'R': '.-.', 'S': '...', 'T': '-',
+
+                   'U': '..-', 'V': '...-', 'W': '.--',
+
+                   'X': '-..-', 'Y': '-.--', 'Z': '--..'}
+class Morse(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.setGeometry(400, 400, 420, 100)
+        self.setWindowTitle('Азбука Морзе 2')
+
+        self.str = QLineEdit(self)
+        self.str.setGeometry(0, 50, 400, 100)
+        self.str.setReadOnly(True)
+        a = 0
+
+        for i, j in morse_alphabet.items():
+            self.btn = QPushButton(i, self)
+            self.btn.setText(i)
+            self.btn.resize(30, 30)
+            self.btn.move(a, 0)
+            a = a + 35
+            self.btn.clicked.connect(self.result)
+
+    def result(self):
+        s = morse_alphabet[self.sender().text()]
+        d = self.str.text()
+        self.str.setText(f"{d} {s} ")
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    m = Morse()
+    m.show()
+    sys.exit(app.exec())
