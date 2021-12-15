@@ -1,0 +1,43 @@
+from fractions import Fraction
+import random
+n = int(input())
+A = [[random.randint(-20, 50) for _ in range(n)] for _ in range(n)]
+f = [random.randint(-20, 50) for _ in range(n)]
+P = False
+while not P:
+    for index in range(len(A)):
+        if A[index][index] == 0:
+            A[index], A[index + 1] = A[index + 1], A[index]
+            f[index], f[index + 1] = f[index + 1], f[index]
+        for index_2 in range(len(A)):
+            if A[index_2][index_2] == 0:
+                P = False
+                break
+            else:
+                P = True
+print(A)
+print(f)
+for i in range(1, len(A)):
+    k = i
+    for j in range(len(A[i])):
+        if i > j:
+            if A[i][j] != 0:
+                if A[i][j] != - A[i - k][j]:
+                    b = Fraction(- A[i - k][j], A[i][j])
+                    for t in range(len(A[i])):
+                        A[i][t] = A[i][t] * b
+                    f[i] = f[i] * b
+                for num in range(len(A[i])):
+                    A[i][num] = A[i][num] + A[i - k][num]
+                f[i] = f[i] + f[i - k]
+        k -= 1
+reshenie = [0 for _ in range(n)]
+t = len(A) - 1
+for i in range(1, len(A) + 1):
+    summa = 0
+    for j in range(len(A)):
+        if t != j:
+            summa += A[-i][j] * reshenie[j]
+    reshenie[t] = (f[-i] - summa) / A[-i][t]
+    t -= 1
+print(list(map(lambda x: float(x), reshenie)))
